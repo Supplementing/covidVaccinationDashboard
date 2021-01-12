@@ -10,6 +10,7 @@
       :max="this.country.population"
       precision="4"
       class="progress-left"
+      animated
     >
     </b-progress>
     <b-container fluid>

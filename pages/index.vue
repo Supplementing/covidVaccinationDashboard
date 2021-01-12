@@ -1,24 +1,13 @@
 <template>
   <div class="c">
-    <countries v-bind:countries="countries" />
+    <countries />
   </div>
 </template>
 
 <script>
 export default {
   data() {
-    return {
-      countries: [],
-      loaded: false
-    };
-  },
-
-  async fetch() {
-    await fetch(
-      "https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/latest/owid-covid-latest.json"
-    )
-      .then(res => res.json())
-      .then(data => (this.countries = data));
+    return {};
   }
 };
 </script>
