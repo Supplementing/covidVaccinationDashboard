@@ -136,6 +136,7 @@ export default {
   margin-left: 10%;
 }
 .percentageBar {
+  padding-top: 10px;
   width: 70%;
   margin: auto;
 
