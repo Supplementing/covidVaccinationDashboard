@@ -10,8 +10,8 @@
       </section>
       <div id="paragraphHeading">
         <p>
-          Live stats for Covid-19 vaccination around the world. An ongoing
-          effort to end the epidemic. Updated daily.
+          Live stats for Covid-19 vaccination around the world. <br />
+          An ongoing effort to end the epidemic. <br />Updated daily.
         </p>
       </div>
 
@@ -39,11 +39,16 @@
         v-model="search"
       />
     </div>
+
     <div class="world-data-container text-white"></div>
 
     <div class="all-countries-container">
+      <input type="checkbox" @click="changeEnabled" />
+      <strong>Show Countries with Zero Vaccinations </strong>
+
       <div :key="country" v-for="country in filteredLocations">
-        <country v-if="country.total_vaccinations" :country="country" />
+        <country v-if="enabled" :country="country" />
+        <country v-else-if="country.total_vaccinations" :country="country" />
       </div>
     </div>
     <foot />
@@ -60,6 +65,7 @@ export default {
           item.location.toLowerCase().indexOf(this.search.toLowerCase()) > -1
         );
       });
+
       return filteredData;
     }
   },
@@ -72,11 +78,17 @@ export default {
       max: 0,
       vac: this.$store.getters.totalVaccinations,
       pop: this.$store.getters.totalPopulation,
-      search: ""
+      search: "",
+      enabled: false,
+      countryCount: 0
     };
   },
 
-  methods: {}
+  methods: {
+    changeEnabled() {
+      this.enabled = !this.enabled;
+    }
+  }
 };
 </script>
 
@@ -115,8 +127,8 @@ export default {
   margin-top: 50px;
   margin-left: 10%;
 
-  width: 30%;
-  height: 25vh;
+  width: auto;
+  height: auto;
 
   text-align: left;
 }
