@@ -45,6 +45,13 @@
     <div class="all-countries-container">
       <input type="checkbox" @click="changeEnabled" />
       <strong>Show Countries with Zero Vaccinations </strong>
+      <br />
+      <select name="filtering" v-model="filterSelection">
+        <option value="none" disabled>Sort By.. </option>
+        <option value="none">None </option>
+        <option value="ascending">Ascending(percentage)</option>
+        <option value="descending">Descending(percentage</option>
+      </select>
 
       <div :key="country" v-for="country in filteredLocations">
         <country v-if="enabled" :country="country" />
@@ -65,7 +72,7 @@ export default {
           item.location.toLowerCase().indexOf(this.search.toLowerCase()) > -1
         );
       });
-
+      filteredData = this.filterBy(this.filterSelection, filteredData);
       return filteredData;
     }
   },
@@ -80,13 +87,35 @@ export default {
       pop: this.$store.getters.totalPopulation,
       search: "",
       enabled: false,
-      countryCount: 0
+      filterSelection: "none"
     };
   },
 
   methods: {
     changeEnabled() {
       this.enabled = !this.enabled;
+    },
+    filterBy(filterSelection, filteredData) {
+      //if no filter selected, just return normal data
+      if (filterSelection == "none") {
+        return filteredData;
+      } else if (filterSelection == "ascending") {
+        filteredData.sort((a, b) =>
+          a.total_vaccinations / a.population >
+          b.total_vaccinations / b.population
+            ? 1
+            : -1
+        );
+        return filteredData;
+      } else if (filterSelection == "descending") {
+        filteredData.sort((a, b) =>
+          a.total_vaccinations / a.population <
+          b.total_vaccinations / b.population
+            ? 1
+            : -1
+        );
+        return filteredData;
+      }
     }
   }
 };
