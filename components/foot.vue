@@ -11,6 +11,7 @@ export default {};
 
 <style>
 .footer {
-  margin-top: 20px;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 </style>
