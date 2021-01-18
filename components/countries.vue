@@ -1,64 +1,77 @@
 <template>
   <div class="whole-container">
-    <div class="jt">
-      <section class="bigFont">
-        Covid-19 Vaccination Tracker
-      </section>
-
-      <section class="smallFont">
-        We're all in this together
-      </section>
-      <div id="paragraphHeading">
-        <p>
-          Live stats for Covid-19 vaccination around the world. <br />
-          An ongoing effort to end the epidemic. <br />Updated daily.
-        </p>
-      </div>
-
-      <div class="percentageBar">
-        Percentage of the entire world vaccinated:
-        <b-progress
-          variant="warning"
-          :value="this.$store.getters.totalVaccinations"
-          :max="this.$store.getters.totalPopulation"
-          precision="2"
-          animated
-        >
-        </b-progress>
-        {{
-          (
-            100 *
-            (this.$store.getters.totalVaccinations /
-              this.$store.getters.totalPopulation)
-          ).toFixed(2)
-        }}%
-      </div>
-      <input
-        id="searchBox"
-        placeholder="Search for country..."
-        v-model="search"
-      />
-    </div>
-
-    <div class="world-data-container text-white"></div>
-
-    <div class="all-countries-container">
-      <input type="checkbox" @click="changeEnabled" />
-      <strong>Show Countries with Zero Vaccinations </strong>
+    <!-- loading div so that the page doesnt show up until all the data is parsed and loaded -->
+    <div v-if="$store.state.isLoading">
+      <b-spinner
+        style="width: 150px; height: 150px;  margin-top:25%;"
+        variant="primary"
+        large
+        label="Loading..."
+      ></b-spinner>
       <br />
-      <select name="filtering" v-model="filterSelection">
-        <option value="none" disabled>Sort By.. </option>
-        <option value="none">None </option>
-        <option value="ascending">Ascending(percentage)</option>
-        <option value="descending">Descending(percentage</option>
-      </select>
-
-      <div :key="country" v-for="country in filteredLocations">
-        <country v-if="enabled" :country="country" />
-        <country v-else-if="country.total_vaccinations" :country="country" />
-      </div>
+      Loading....
     </div>
-    <foot />
+    <div v-else>
+      <div class="jt">
+        <section class="bigFont">
+          Covid-19 Vaccination Tracker
+        </section>
+
+        <section class="smallFont">
+          We're all in this together
+        </section>
+        <div id="paragraphHeading">
+          <p>
+            Live stats for Covid-19 vaccination around the world. <br />
+            An ongoing effort to end the epidemic. <br />Updated daily.
+          </p>
+        </div>
+
+        <div class="percentageBar">
+          Percentage of the entire world vaccinated:
+          <b-progress
+            variant="warning"
+            :value="this.$store.getters.totalVaccinations"
+            :max="this.$store.getters.totalPopulation"
+            precision="2"
+            animated
+          >
+          </b-progress>
+          {{
+            (
+              100 *
+              (this.$store.getters.totalVaccinations /
+                this.$store.getters.totalPopulation)
+            ).toFixed(2)
+          }}%
+        </div>
+        <input
+          id="searchBox"
+          placeholder="Search for country..."
+          v-model="search"
+        />
+      </div>
+
+      <div class="world-data-container text-white"></div>
+
+      <div class="all-countries-container">
+        <input type="checkbox" @click="changeEnabled" />
+        <strong>Show Countries with Zero Vaccinations </strong>
+        <br />
+        <select name="filtering" v-model="filterSelection">
+          <option value="none" disabled>Sort By.. </option>
+          <option value="none">None </option>
+          <option value="ascending">Ascending(percentage)</option>
+          <option value="descending">Descending(percentage</option>
+        </select>
+
+        <div :key="country" v-for="country in filteredLocations">
+          <country v-if="enabled" :country="country" />
+          <country v-else-if="country.total_vaccinations" :country="country" />
+        </div>
+      </div>
+      <foot />
+    </div>
   </div>
 </template>
 
